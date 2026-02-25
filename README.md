@@ -8,16 +8,16 @@ Skin-Price-Agg/
 ├── pyproject.toml
 ├── requirements.txt
 ├── app/
-│ ├── init.py
-│ ├── main.py # FastAPI app + routes
-│ ├── models.py # Pydantic Listing/PricesResponse
-│ ├── services.py # Core logic + MARKETPLACES registry
-│ └── markets/
-│ ├── init.py
-│ ├── base.py # MarketplaceBase ABC interface
-│ ├── dmarket.py # Live DMarket API
-│ └── uuskins.py # Live UUSkins API
-├── tests/ # 4 green integration tests
+│   ├── __init__.py
+│   ├── main.py      # FastAPI app
+│   ├── models.py    # Pydantic Listing/PricesResponse
+│   ├── services.py  # MARKETPLACES registry
+│   └── markets/
+│       ├── __init__.py
+│       ├── base.py  # MarketplaceBase ABC
+│       ├── dmarket.py
+│       └── uuskins.py
+├── tests/
 └── README.md
 
 text
