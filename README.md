@@ -121,9 +121,3 @@ Timezone-safe: UTC everywhere
 Type-safe: Full Pydantic validation
 
 Async: Parallel market fetching
-
-Production-ready. Scales to 10+ markets. Battle-tested.
-
-text
-
-**Copy-paste ready!** Covers **every requirement** with crystal-clear "Add New Market" instructions. 🚀
