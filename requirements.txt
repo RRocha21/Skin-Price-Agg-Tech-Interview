@@ -4,4 +4,3 @@ pydantic-settings
 httpx
 pytest
 pytest-asyncio
-python-dotenv
