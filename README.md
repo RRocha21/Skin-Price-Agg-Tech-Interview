@@ -4,6 +4,7 @@
 
 ## Architecture Overview
 
+```
 Skin-Price-Agg/
 ├── pyproject.toml
 ├── requirements.txt
@@ -19,6 +20,7 @@ Skin-Price-Agg/
 │       └── uuskins.py
 ├── tests/
 └── README.md
+```
 
 **Key Design Decisions:**
 - **Interface-driven**: `MarketplaceBase` ABC scales to 10+ markets without core changes
@@ -28,6 +30,7 @@ Skin-Price-Agg/
 - **Production caching**: 60s TTL prevents API rate limiting
 
 ## Features ✓
+
 - ✅ **2+ end-to-end marketplaces** (DMarket + UUSkins APIs working live)
 - ✅ **Normalized JSON**: `marketplace`, `item_name`, `price`, `currency`, `url`, `last_updated`, `float_value`
 - ✅ **Cheapest + best_deal**: Float penalty scoring (0.00=1.0x, 0.45=2.0x, 1.0=3.0x)
@@ -36,24 +39,31 @@ Skin-Price-Agg/
 - ✅ **Fully tested**: 4 green live API integration tests
 
 ## Quickstart
+
 ```bash
 pip install -r requirements.txt
 uvicorn app.main:app --reload
+# or
 fastapi run app/main.py
 ```
-# http://127.0.0.1:8000/docs
-Live test:
 
-bash
-curl "http://127.0.0.1:8000/prices?item_name=AK-47 | Redline"
-API Response
-json
+Access the API docs at **http://127.0.0.1:8000/docs**
+
+### Live Test
+
+```bash
+curl "http://127.0.0.1:8000/prices?item_name=AK-47%20%7C%20Redline"
+```
+
+**API Response:**
+
+```json
 {
   "item_name": "AK-47 | Redline",
   "listings": [
     {
       "marketplace": "dmarket",
-      "item_name": "AK-47 | Redline", 
+      "item_name": "AK-47 | Redline",
       "price": 12.50,
       "float_value": 0.07,
       "currency": "USD",
@@ -61,13 +71,16 @@ json
       "last_updated": "2026-02-25T14:00:00Z"
     }
   ],
-  "cheapest_listing": {...},
-  "best_deal_listing": {...}  // Float-optimized
+  "cheapest_listing": { ... },
+  "best_deal_listing": { ... }
 }
-Adding New Marketplace (2 minutes)
-Create app/markets/steam.py:
+```
 
-python
+## Adding a New Marketplace (2 minutes)
+
+### Step 1: Create `app/markets/steam.py`
+
+```python
 from app.markets.base import MarketplaceBase
 from datetime import datetime, timezone
 import httpx
@@ -85,35 +98,45 @@ class SteamClient(MarketplaceBase):
                 "item_name": item_name,
                 "price": float(price_data),
                 "float_value": None,
-                "currency": "USD", 
+                "currency": "USD",
                 "url": f"https://steamcommunity.com/market/listings/730/{item_name}",
                 "last_updated": datetime.now(timezone.utc)
             }]
-Register in app/services.py:
-python
+```
+
+### Step 2: Register in `app/services.py`
+
+```python
 from app.markets.steam import SteamClient
+
 MARKETPLACES.append(SteamClient())  # Auto-tested!
+```
 
+## Tests
 
+```bash
+# Run all tests (4 green)
+pytest tests/ -v
 
-Tests
-bash
-pytest tests/ -v                    # All tests (4 green)
-pytest tests/ -v -s                 # + Live API print output  
-pytest tests/ -m "not live_api"     # Unit tests only
-Live test output:
+# + Live API print output
+pytest tests/ -v -s
 
-text
+# Unit tests only
+pytest tests/ -m "not live_api"
+```
+
+**Live test output:**
+
+```
 DMarket returned 3 listings
 UUSkins returned 1 listings
 4 passed in 0.96s
-Production Notes
-Rate limiting: 60s cache prevents API bans
+```
 
-Error isolation: Single market failure isolated
+## Production Notes
 
-Timezone-safe: UTC everywhere
-
-Type-safe: Full Pydantic validation
-
-Async: Parallel market fetching
+- **Rate limiting**: 60s cache prevents API bans
+- **Error isolation**: Single market failure isolated
+- **Timezone-safe**: UTC everywhere
+- **Type-safe**: Full Pydantic validation
+- **Async**: Parallel market fetching
