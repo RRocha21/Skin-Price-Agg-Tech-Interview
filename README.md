@@ -92,13 +92,11 @@ class SteamClient(MarketplaceBase):
                 "last_updated": datetime.now(timezone.utc)
             }]
 Register in app/services.py:
-
 python
 from app.markets.steam import SteamClient
 MARKETPLACES.append(SteamClient())  # Auto-tested!
-Test: pytest tests/ -v (template test runs automatically)
 
-Zero core changes – scales to 10+ markets instantly!
+
 
 Tests
 bash
