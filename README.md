@@ -47,8 +47,6 @@ uvicorn app.main:app --reload
 fastapi run app/main.py
 ```
 
-Access the API docs at **http://127.0.0.1:8000/docs**
-
 ### Live Test
 
 ```bash
