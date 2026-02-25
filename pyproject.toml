@@ -1,0 +1,17 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.fastapi-cli]
+single_file = "app/main.py"
+
+[tool.uvicorn]
+reload = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+asyncio_mode = "auto"
+markers = [
+    "live_api: Tests real external APIs"
+]
