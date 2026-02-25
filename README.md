@@ -44,7 +44,7 @@ Skin-Price-Agg/
 pip install -r requirements.txt
 python -m uvicorn app.main:app --reload 
 # or
-python -m fastapi run app/main.py
+uvicorn app.main:app --reload 
 ```
 
 ### Live Test
