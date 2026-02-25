@@ -20,8 +20,6 @@ Skin-Price-Agg/
 ├── tests/
 └── README.md
 
-text
-
 **Key Design Decisions:**
 - **Interface-driven**: `MarketplaceBase` ABC scales to 10+ markets without core changes
 - **Normalized data**: All listings → unified `Listing` Pydantic model
